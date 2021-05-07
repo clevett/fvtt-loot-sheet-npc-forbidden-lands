@@ -1,0 +1,39 @@
+{
+  "name": "fvtt-loot-sheet-npc-forbidden-lands",
+  "version": "1.0.0",
+  "description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or merchants in your game. It has a permission system that allows observers to make loot or ourchase actions which will automatically process the item transaction, including inventory moves and currency changes.",
+  "main": "index.js",
+  "dependencies": {
+    "autoprefixer": "^7.1.4",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
+    "postcss-cli": "^4.1.1",
+    "pug": "^2.0.4",
+    "pug-cli": "^1.0.0-alpha6"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "npm-run-all --parallel compile:sass compile:pug build:ts",
+    "compile:sass": "node-sass ./src/scss/main.scss ./src/bundle.css -w",
+    "compile:pug": "pug ./src/pug/npc-sheet.pug -o ./template/ -w",
+    "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' css/style.comp.css -o css/style.prefix.css",
+    "build:css": "npm-run-all compile:sass prefix:css",
+    "build:ts": "babel --out-file ./src/bundle.js ./src/typescript/main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clevett/fvtt-loot-sheet-npc-forbidden-lands.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clevett/fvtt-loot-sheet-npc-forbidden-lands/issues"
+  },
+  "homepage": "https://github.com/clevett/fvtt-loot-sheet-npc-forbidden-lands#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/preset-typescript": "^7.13.0",
+    "jest": "^26.6.3"
+  }
+}

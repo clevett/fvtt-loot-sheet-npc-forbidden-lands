@@ -76,7 +76,7 @@ class QuantityDialog extends Dialog {
 
 class LootSheet5eNPC extends ActorSheet5eNPC {
 
-    static SOCKET = "module.lootsheetnpc5e";
+    static SOCKET = "module.lootsheetnpcforbiddenlands";
 
     get template() {
         // adding the #equals and #unequals handlebars helper
@@ -93,7 +93,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         });
 
         Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
-            let showStackWeight = game.settings.get("lootsheetnpc5e", "showStackWeight");
+            let showStackWeight = game.settings.get("lootsheetnpcforbiddenlands", "showStackWeight");
             if (showStackWeight) {
                 return `/${(weight * qty).toLocaleString('en')}`;
             }
@@ -109,7 +109,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         const path = "systems/dnd5e/templates/actors/";
         if (!game.user.isGM && this.actor.limited) return path + "limited-sheet.html";
-        return "modules/lootsheetnpc5e/template/npc-sheet.html";
+        return "modules/lootsheetnpcforbiddenlands/template/npc-sheet.html";
     }
 
     static get defaultOptions() {
@@ -137,16 +137,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log("sheetData.isGM: ", sheetData.isGM);
         console.log(this.actor);
 
-        let lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
-        if (!lootsheettype) await this.actor.setFlag("lootsheetnpc5e", "lootsheettype", "Loot");
-        lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
+        let lootsheettype = await this.actor.getFlag("lootsheetnpcforbiddenlands", "lootsheettype");
+        if (!lootsheettype) await this.actor.setFlag("lootsheetnpcforbiddenlands", "lootsheettype", "Loot");
+        lootsheettype = await this.actor.getFlag("lootsheetnpcforbiddenlands", "lootsheettype");
 
 
         let priceModifier = 1.0;
         if (lootsheettype === "Merchant") {
-            priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
-            if (typeof priceModifier !== 'number') await this.actor.setFlag("lootsheetnpc5e", "priceModifier", 1.0);
-            priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
+            priceModifier = await this.actor.getFlag("lootsheetnpcforbiddenlands", "priceModifier");
+            if (typeof priceModifier !== 'number') await this.actor.setFlag("lootsheetnpcforbiddenlands", "priceModifier", 1.0);
+            priceModifier = await this.actor.getFlag("lootsheetnpcforbiddenlands", "priceModifier");
         }
 
         let totalWeight = 0;
@@ -165,8 +165,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         sheetData.totalQuantity = totalQuantity;
         sheetData.priceModifier = priceModifier;
         sheetData.rolltables = game.tables.entities;
-        sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");
-        sheetData.lootAll = game.settings.get("lootsheetnpc5e", "lootAll");
+        sheetData.lootCurrency = game.settings.get("lootsheetnpcforbiddenlands", "lootCurrency");
+        sheetData.lootAll = game.settings.get("lootsheetnpcforbiddenlands", "lootAll");
 
         // Return data for rendering
         return sheetData;
@@ -229,7 +229,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
         console.log("Loot Sheet | Merchant settings changed");
 
-        const moduleNamespace = "lootsheetnpc5e";
+        const moduleNamespace = "lootsheetnpcforbiddenlands";
         const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory", "itemOnlyOnce"];
 
         let targetKey = event.target.name.split('.')[3];
@@ -263,14 +263,14 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      async _merchantInventoryUpdate(event, html) {
         event.preventDefault();
 
-        const moduleNamespace = "lootsheetnpc5e";
+        const moduleNamespace = "lootsheetnpcforbiddenlands";
         const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
         const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
         const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
         const clearInventory = this.actor.getFlag(moduleNamespace, "clearInventory");
         const itemOnlyOnce = this.actor.getFlag(moduleNamespace, "itemOnlyOnce");
-        const reducedVerbosity = game.settings.get("lootsheetnpc5e", "reduceUpdateVerbosity");
+        const reducedVerbosity = game.settings.get("lootsheetnpcforbiddenlands", "reduceUpdateVerbosity");
 
         let shopQtyRoll = new Roll(shopQtyFormula);
         shopQtyRoll.roll();
@@ -518,7 +518,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let selectedItem = event.target[selectedIndex].value;
 
-        await currentActor.setFlag("lootsheetnpc5e", "lootsheettype", selectedItem);
+        await currentActor.setFlag("lootsheetnpcforbiddenlands", "lootsheettype", selectedItem);
 
     }
 
@@ -656,7 +656,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     _lootCoins(event) {
         event.preventDefault();
-        if (!game.settings.get("lootsheetnpc5e", "lootCurrency")) {
+        if (!game.settings.get("lootsheetnpcforbiddenlands", "lootCurrency")) {
             return;
         }
         console.log("Loot Sheet | Loot Coins clicked");
@@ -758,12 +758,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log("Loot Sheet | Price Modifier clicked");
         //console.log(this.actor.isToken);
 
-        let priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
+        let priceModifier = await this.actor.getFlag("lootsheetnpcforbiddenlands", "priceModifier");
         if (typeof priceModifier !== 'number') priceModifier = 1.0;
 
         priceModifier = Math.round(priceModifier * 100);
 
-        const maxModifier = game.settings.get("lootsheetnpc5e", "maxPriceIncrease");
+        const maxModifier = game.settings.get("lootsheetnpcforbiddenlands", "maxPriceIncrease");
 
         var html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This uses a percentage factor where 100% is the current price, 0% is 0, and 200% is double the price.'></i></p>";
         html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="' + maxModifier + '" value="' + priceModifier + '" class="slider"></p>';
@@ -777,7 +777,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 one: {
                     icon: '<i class="fas fa-check"></i>',
                     label: "Update",
-                    callback: () => this.actor.setFlag("lootsheetnpc5e", "priceModifier", document.getElementById("price-modifier-percent").value / 100)
+                    callback: () => this.actor.setFlag("lootsheetnpcforbiddenlands", "priceModifier", document.getElementById("price-modifier-percent").value / 100)
                 },
                 two: {
                     icon: '<i class="fas fa-times"></i>',
@@ -834,7 +834,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     }
 
     _hackydistributeCoins(containerActor) {
-        //This is identical as the distributeCoins function defined in the init hook which for some reason can't be called from the above _distributeCoins method of the LootSheetNPC5E class. I couldn't be bothered to figure out why a socket can't be called as the GM... so this is a hack but it works.
+        //This is identical as the distributeCoins function defined in the init hook which for some reason can't be called from the above _distributeCoins method of the lootsheetnpcforbiddenlands class. I couldn't be bothered to figure out why a socket can't be called as the GM... so this is a hack but it works.
         let actorData = containerActor.data
         let observers = [];
         let players = game.users.players;
@@ -1200,7 +1200,7 @@ Hooks.once("init", () => {
         return options.inverse(this);
     });
 
-    game.settings.register("lootsheetnpc5e", "convertCurrency", {
+    game.settings.register("lootsheetnpcforbiddenlands", "convertCurrency", {
         name: "Convert currency after purchases?",
         hint: "If enabled, all currency will be converted to the highest denomination possible after a purchase. If disabled, currency will subtracted simply.",
         scope: "world",
@@ -1209,7 +1209,7 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "buyChat", {
+    game.settings.register("lootsheetnpcforbiddenlands", "buyChat", {
         name: "Display chat message for purchases?",
         hint: "If enabled, a chat message will display purchases of items from the loot sheet.",
         scope: "world",
@@ -1218,7 +1218,7 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "lootCurrency", {
+    game.settings.register("lootsheetnpcforbiddenlands", "lootCurrency", {
         name: "Loot currency?",
         hint: "If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.",
         scope: "world",
@@ -1227,7 +1227,7 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "lootAll", {
+    game.settings.register("lootsheetnpcforbiddenlands", "lootAll", {
         name: "Loot all?",
         hint: "If enabled, players will have the option to loot all items to their character, currency will follow the 'Loot Currency?' setting upon Loot All.",
         scope: "world",
@@ -1236,7 +1236,7 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "showStackWeight", {
+    game.settings.register("lootsheetnpcforbiddenlands", "showStackWeight", {
         name: "Show Stack Weight?",
         hint: "If enabled, shows the weight of the entire stack next to the item weight",
         scope: "world",
@@ -1245,7 +1245,7 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "reduceUpdateVerbosity", {
+    game.settings.register("lootsheetnpcforbiddenlands", "reduceUpdateVerbosity", {
         name: "Reduce Update Shop Verbosity",
         hint: "If enabled, no notifications will be created every time an item is added to the shop.",
         scope: "world",
@@ -1254,7 +1254,7 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "maxPriceIncrease", {
+    game.settings.register("lootsheetnpcforbiddenlands", "maxPriceIncrease", {
         name: "Maximum Price Increase",
         hint: "Change the maximum price increase for a merchant in percent",
         scope: "world",
@@ -1264,7 +1264,7 @@ Hooks.once("init", () => {
     });
 
     function chatMessage(speaker, owner, message, item) {
-        if (game.settings.get("lootsheetnpc5e", "buyChat")) {
+        if (game.settings.get("lootsheetnpcforbiddenlands", "buyChat")) {
             message = `
             <div class="dnd5e chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
                 <header class="card-header flexrow">
@@ -1387,7 +1387,7 @@ Hooks.once("init", () => {
             return;
         }
 
-        let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
+        let sellerModifier = seller.getFlag("lootsheetnpcforbiddenlands", "priceModifier");
         if (typeof sellerModifier !== 'number') sellerModifier = 1.0;
 
         let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
@@ -1427,7 +1427,7 @@ Hooks.once("init", () => {
             return;
         }
 
-        let convertCurrency = game.settings.get("lootsheetnpc5e", "convertCurrency");
+        let convertCurrency = game.settings.get("lootsheetnpcforbiddenlands", "convertCurrency");
 
         if (convertCurrency) {
             buyerFundsAsPlatinum -= itemCostInPlatinum;
