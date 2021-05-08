@@ -1,2 +1,18 @@
-//Version 0.0.0
-//Test
+form(class="{{cssClass}}" autocomplete="off")
+    header(class="sheet-header flexrow")
+        h1(class="charname")
+            input(name="name" type="text" value="{{actor.name}}" placeholder="Character Name")
+        | {{#ifeq lootsheettype "Loot"}}
+        |     {{#if lootAll}}
+                .charbutton
+                    button.loot-all(type="button" name="loot-all" value="1")
+                        i.fas.fa-gem Loot All
+        |     {{/if}}
+        | {{/ifeq}}
+        //- {{#if isGM}}
+        //-     {{#ifeq lootsheettype "Merchant"}}
+        //-         .charbutton
+        //-             button(type="button" class="price-meeodifier" type="price-modifier" name="price-modifier" value="")
+        //-                 i.fa.fa-balance-scale Price Modifier
+        //-     {{/ifeq}}
+        //- {{/if}}
